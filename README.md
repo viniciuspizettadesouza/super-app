@@ -12,6 +12,12 @@ yarn dev
 pnpm dev
 ```
 
+## Run Jest Tests
+
+```bash
+npm test
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
@@ -37,3 +43,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 https://github.com/viniciuspizettadesouza/challenge-conaz
 https://github.com/viniciuspizettadesouza/challenge-zygo
+https://github.com/viniciuspizettadesouza/challenge-propertiag

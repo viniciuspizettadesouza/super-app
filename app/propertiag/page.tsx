@@ -1,11 +1,11 @@
 import React from "react";
-import BookSortingComponent from "@components/Zygo";
+import PropertiAG from "@components/PropertiAG";
 
 const HomePage: React.FC = () => {
   return (
     <div>
-      <h1>Zygo Programming Challenge</h1>
-      <BookSortingComponent />
+      <h1>PropertiAG Programming Challenge</h1>
+      <PropertiAG />
     </div>
   );
 };

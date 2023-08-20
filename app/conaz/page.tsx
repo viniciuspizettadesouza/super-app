@@ -1,6 +1,6 @@
 import React from "react";
-import Conaz1 from "@/app/components/Conaz/Conaz1";
-import Conaz2 from "@/app/components/Conaz/Conaz2";
+import Conaz1 from "@components/Conaz/Conaz1";
+import Conaz2 from "@components/Conaz/Conaz2";
 
 const HomePage: React.FC = () => {
   return (
