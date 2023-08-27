@@ -1,14 +1,14 @@
 
 export interface WeatherData {
-    current: CurrentWeatherData;
-    hourly: HourlyWeatherData[];
+    current: WeatherCurrentData;
+    hourly: WeatherHourlyData[];
     lat: number;
     lon: number;
     timezone: string;
     timezone_offset: number;
 }
 
-export interface CurrentWeatherData {
+export interface WeatherCurrentData {
     dt: number;
     sunrise: number;
     sunset: number;
@@ -16,7 +16,7 @@ export interface CurrentWeatherData {
     feels_like: number;
 }
 
-export interface HourlyWeatherData {
+export interface WeatherHourlyData {
     dt: number;
     temp: number;
     feels_like: number;
@@ -43,4 +43,47 @@ export interface WeatherCondition {
 export interface LocationData {
     latitude: number;
     longitude: number;
+}
+
+//Geocode Types
+export interface GeocodeResult {
+    address_components: AddressComponent[];
+    formatted_address: string;
+    geometry: Geometry;
+    place_id: string;
+    types: string[];
+}
+
+export interface AddressComponent {
+    long_name: string;
+    short_name: string;
+    types: string[];
+}
+
+export interface Geometry {
+    bounds: {
+        northeast: {
+            lat: number;
+            lng: number;
+        };
+        southwest: {
+            lat: number;
+            lng: number;
+        };
+    };
+    location: {
+        lat: number;
+        lng: number;
+    };
+    location_type: string;
+    viewport: {
+        northeast: {
+            lat: number;
+            lng: number;
+        };
+        southwest: {
+            lat: number;
+            lng: number;
+        };
+    };
 }

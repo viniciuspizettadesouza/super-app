@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { useWeatherContext } from "@contexts/WeatherContext";
-import { WeatherData, LocationData } from "@/app/interfaces/weather.interface";
-import { setLocalStorageData, removeLocalStorageData } from "@utils/localStorage";
-
-const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
-const openWeatherMapApiKey = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY || '';
+import {
+  WeatherData,
+  GeocodeResult,
+} from "@/app/interfaces/weather.interface";
+import { fetchGeocode, fetchGeocodeReverse, fetchWeather } from "@app/api";
+import { setLocalStorageData } from "@utils/localStorageUtils";
+import { getLocation } from "@utils/geolocationUtils";
+import { handleError } from "@utils/errorHandlingUtils";
 
 const SearchComponent: React.FC = () => {
   const {
@@ -14,14 +17,14 @@ const SearchComponent: React.FC = () => {
     setLatitude,
     setLongitude,
     setGeocodeResponse,
-    setWeatherForecastHourly
+    setWeatherForecastHourly,
   } = useWeatherContext();
 
-  const [inputValue, setInputValue] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+    const value: string = event.target.value;
     setInputValue(value);
     setIsOpen(true);
   };
@@ -38,106 +41,70 @@ const SearchComponent: React.FC = () => {
     }, 150);
   };
 
-  const getLocation = (): Promise<LocationData | null> => {
-    return new Promise<LocationData | null>((resolve) => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setLatitude(latitude);
-          setLongitude(longitude);
-          resolve({ latitude, longitude });
-        },
-        (error) => {
-          console.error(error.message);
-          resolve(null);
-        }
-      );
-    });
-  };
-
-  const fetchGeocode = async (selectedCity: string, apiKey: string) => {
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${selectedCity}&key=${apiKey}`
-      );
-      const json = await response.json();
-      return json.results[0];
-    } catch (error) {
-      console.error("Failed retrieving information", error);
-    }
-  };
-
-  const weatherOneCallAPI = (lat: number, long: number) => {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,daily,alerts&units=metric&appid=${openWeatherMapApiKey}`
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setWeatherForecast(json);
-      })
-      .catch((error) => {
-        console.error("Failed retrieving information", error);
-      });
-  };
-
-  const setWeatherForecast = (weather: WeatherData) => {
-    removeLocalStorageData("weatherForecast");
-
-    if (weather !== null) {
-      setLocalStorageData("weatherForecast", weather);
-      setWeatherForecastHourly(weather.hourly)
-    }
-  };
-
   const cacheSearch = (selectedCity: string) => {
-    const include = searchedCities.includes(selectedCity);
-    if (selectedCity && !include) {
+    if (selectedCity && !searchedCities.includes(selectedCity)) {
       setLocalStorageData("searchedCities", [...searchedCities, selectedCity]);
     }
   };
 
-  const geocoding = (selectedCity: string) => {
+  const geocoding = async (selectedCity: string) => {
+    if (!selectedCity) {
+      handleError(new Error("Selected city is null."));
+      return;
+    }
+
     cacheSearch(selectedCity);
-
-    fetchGeocode(selectedCity, googleMapsApiKey)
-      .then((geocodeResult) => {
-        setGeocodeResponse(geocodeResult);
-        const lat = geocodeResult.geometry.location.lat;
-        const long = geocodeResult.geometry.location.lng;
-        weatherOneCallAPI(lat, long);
-      })
-      .catch((error) => {
-        console.error("Failed retrieving information", error);
-      });
-
+    try {
+      const geocode = await fetchGeocode(selectedCity);
+      handleGeocodeResponse(geocode);
+    } catch (error) {
+      handleError(error as Error);
+    }
     setSelectedCity(null);
   };
 
+  const handleGeocodeResponse = (geocode: GeocodeResult) => {
+    const firstResult = geocode;
+    const { lat, lng } = firstResult?.geometry.location;
+    setGeocodeResponse(firstResult);
+    weatherOneCallAPI(lat, lng);
+  };
+
   const reverseGeocoding = async () => {
-    const locationData = await getLocation();
-
-    if (locationData === null) {
-      console.error("Cannot get Location");
-    } else {
+    try {
+      const locationData = await getLocation();
       const { latitude, longitude } = locationData;
+      setLatitude(latitude);
+      setLongitude(longitude);
 
-      fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${googleMapsApiKey}`
-      )
-        .then((response) => response.json())
-        .then((json) => {
-          setGeocodeResponse(json.results[0]);
-          weatherOneCallAPI(latitude, longitude);
-        })
-        .catch((error) => {
-          console.error("Failed retrieving information", error);
-        });
+      const geocodeResult = await fetchGeocodeReverse(latitude, longitude);
+      setGeocodeResponse(geocodeResult);
+      weatherOneCallAPI(latitude, longitude);
+    } catch (error) {
+      handleError(error as Error);
     }
   };
 
+  const weatherOneCallAPI = async (lat: number, lon: number) => {
+    try {
+      const weatherData: WeatherData = await fetchWeather(lat, lon);
+      handleWeatherResponse(weatherData);
+    } catch (error) {
+      handleError(error as Error);
+    }
+  };
+
+  const handleWeatherResponse = (weatherData: WeatherData) => {
+    setWeatherForecastHourly(weatherData.hourly);
+  };
+
+  const filteredCities: string[] = searchedCities.filter((option: string) =>
+    option.toLowerCase().includes(inputValue.toLowerCase())
+  );
+
   return (
     <div className="flex justify-center items-center flex-col">
-      <div className="flex flex-row items-center justify-center">
+      <div className="flex flex-row items-center justify-center my-6">
         <div className="relative">
           <input
             type="text"
@@ -149,19 +116,15 @@ const SearchComponent: React.FC = () => {
           />
           {isOpen && (
             <div className="absolute z-10 mt-2 py-2 bg-white border border-gray-300 rounded-md shadow-lg w-full">
-              {searchedCities
-                .filter((option: string) =>
-                  option.toLowerCase().includes(inputValue.toLowerCase())
-                )
-                .map((option: string, index: number) => (
-                  <div
-                    key={index}
-                    className="px-4 py-2 cursor-pointer hover:bg-indigo-100"
-                    onClick={() => handleOptionClick(option)}
-                  >
-                    {option}
-                  </div>
-                ))}
+              {filteredCities.map((option, index) => (
+                <div
+                  key={index}
+                  className="px-4 py-2 cursor-pointer hover:bg-indigo-100"
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option}
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -189,7 +152,7 @@ const SearchComponent: React.FC = () => {
           className="bg-blue-500 text-white p-2 rounded"
           onClick={() => geocoding(selectedCity)}
         >
-          Search 
+          Search
         </button>
         {selectedCity && (
           <div className="mt-2 text-gray-600">

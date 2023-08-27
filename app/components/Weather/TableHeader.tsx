@@ -1,3 +1,5 @@
+import React from "react";
+
 const TableHeader: React.FC = () => (
   <thead>
     <tr>

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { convertToRoman } from "@utils/romanConverter";
+import { convertToRoman } from "@utils/romanConverterUtils";
 
 export default function Home() {
   const [inputNumber, setInputNumber] = useState<number | undefined>(undefined);

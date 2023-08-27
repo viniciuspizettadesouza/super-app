@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { CurrentWeatherData, HourlyWeatherData } from "../interfaces/weather.interface";
-import { getLocalStorageData } from "@utils/localStorage";
+import { WeatherCurrentData, WeatherHourlyData } from "../interfaces/weather.interface";
+import { getLocalStorageData } from "@utils/localStorageUtils";
 
 const WeatherContext = createContext<any>(null);
 
@@ -14,8 +14,8 @@ interface WeatherProviderProps {
 
 export const WeatherProvider: React.FC<WeatherProviderProps> = ({ children }) => {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
-  const [weatherForecastCurrent, setWeatherForecastCurrent] = useState<CurrentWeatherData[]>([]);
-  const [weatherForecastHourly, setWeatherForecastHourly] = useState<HourlyWeatherData[]>([]);
+  const [weatherForecastCurrent, setWeatherForecastCurrent] = useState<WeatherCurrentData[]>([]);
+  const [weatherForecastHourly, setWeatherForecastHourly] = useState<WeatherHourlyData[]>([]);
   const [searchedCities, setSearchedCities] = useState<string[]>([
     'Lisbon',
     'Madrid',

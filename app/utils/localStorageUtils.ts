@@ -1,6 +1,4 @@
-interface StorageData {
-  [key: string]: any;
-}
+import { StorageData } from "@/app/interfaces/storage.interface";
 
 export const getLocalStorageData = (key: string): any | null => {
   try {
