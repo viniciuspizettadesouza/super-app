@@ -1,8 +1,14 @@
-export interface HourlyWeather {
-    dt: number;
+
+export interface WeatherData {
+    current: CurrentWeatherData;
+    hourly: HourlyWeatherData[];
+    lat: number;
+    lon: number;
+    timezone: string;
+    timezone_offset: number;
 }
 
-export interface CurrentWeather {
+export interface CurrentWeatherData {
     dt: number;
     sunrise: number;
     sunset: number;
@@ -10,13 +16,28 @@ export interface CurrentWeather {
     feels_like: number;
 }
 
-export interface WeatherData {
-    current: CurrentWeather;
-    hourly: HourlyWeather[];
-    lat: number;
-    lon: number;
-    timezone: string;
-    timezone_offset: number;
+export interface HourlyWeatherData {
+    dt: number;
+    temp: number;
+    feels_like: number;
+    pressure: number;
+    humidity: number;
+    dew_point: number;
+    uvi: number;
+    clouds: number;
+    visibility: number;
+    wind_speed: number;
+    wind_deg: number;
+    wind_gust: number;
+    weather: WeatherCondition[];
+    pop: number;
+}
+
+export interface WeatherCondition {
+    id: number;
+    main: string;
+    description: string;
+    icon: string;
 }
 
 export interface LocationData {

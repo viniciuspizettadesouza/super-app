@@ -20,15 +20,6 @@ const SearchComponent: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
-  const options = [
-    'Lisbon',
-    'Madrid',
-    'Paris',
-    'London',
-    'Rome',
-    'Berlin'
-  ];
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
@@ -158,11 +149,11 @@ const SearchComponent: React.FC = () => {
           />
           {isOpen && (
             <div className="absolute z-10 mt-2 py-2 bg-white border border-gray-300 rounded-md shadow-lg w-full">
-              {options
-                .filter((option) =>
+              {searchedCities
+                .filter((option: string) =>
                   option.toLowerCase().includes(inputValue.toLowerCase())
                 )
-                .map((option, index) => (
+                .map((option: string, index: number) => (
                   <div
                     key={index}
                     className="px-4 py-2 cursor-pointer hover:bg-indigo-100"
@@ -198,11 +189,8 @@ const SearchComponent: React.FC = () => {
           className="bg-blue-500 text-white p-2 rounded"
           onClick={() => geocoding(selectedCity)}
         >
-          Search
+          Search 
         </button>
-      </div>
-
-      <div>
         {selectedCity && (
           <div className="mt-2 text-gray-600">
             Selected option: {selectedCity}

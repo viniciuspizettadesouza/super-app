@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { CurrentWeather, HourlyWeather } from "../interfaces/weather.interface";
+import { CurrentWeatherData, HourlyWeatherData } from "../interfaces/weather.interface";
 import { getLocalStorageData } from "@utils/localStorage";
 
 const WeatherContext = createContext<any>(null);
@@ -14,9 +14,16 @@ interface WeatherProviderProps {
 
 export const WeatherProvider: React.FC<WeatherProviderProps> = ({ children }) => {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
-  const [weatherForecastCurrent, setWeatherForecastCurrent] = useState<CurrentWeather[]>([]);
-  const [weatherForecastHourly, setWeatherForecastHourly] = useState<HourlyWeather[]>([]);
-  const [searchedCities, setSearchedCities] = useState<string[]>([]);
+  const [weatherForecastCurrent, setWeatherForecastCurrent] = useState<CurrentWeatherData[]>([]);
+  const [weatherForecastHourly, setWeatherForecastHourly] = useState<HourlyWeatherData[]>([]);
+  const [searchedCities, setSearchedCities] = useState<string[]>([
+    'Lisbon',
+    'Madrid',
+    'Paris',
+    'London',
+    'Rome',
+    'Berlin'
+  ]);
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [geocodeResponse, setGeocodeResponse] = useState<any | null>(null);

@@ -11,12 +11,13 @@ const TableList: React.FC = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="w-full mt-4">
-        <table className="min-w-full">
+      <div className="bg-white shadow-md rounded my-6">
+        <h1 className="text-2xl font-semibold mb-4">Weather Forecast next 48 hours in ...</h1>
+        <table className="min-w-full leading-normal">
           <TableHeader />
           <tbody>
             {weatherForecastHourly.map((item: WeatherData, index: number) => (
-              <TableRow key={index} item={item} />
+              <TableRow key={index} item={item} index={index} />
             ))}
           </tbody>
         </table>
