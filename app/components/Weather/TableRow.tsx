@@ -1,8 +1,10 @@
 import React from "react";
+import Image from 'next/image'
 import { WeatherData } from "@/app/interfaces/weather.interface";
 
 const formatTemperature = (temp: number) => `${Math.round(temp)}º C`;
 const formatHumidity = (humidity: number) => `${humidity}%`;
+
 
 const TableRow: React.FC<{ item: WeatherData }> = ({ item }) => (
     <tr>
@@ -20,6 +22,7 @@ const TableRow: React.FC<{ item: WeatherData }> = ({ item }) => (
         </td>
         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
             {item.weather[0].description}
+            <Image src="https://openweathermap.org/img/wn/10d@2x.png" alt="image" width="50" height="50" />
         </td>
     </tr>
 );

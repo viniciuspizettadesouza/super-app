@@ -1,25 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import { useWeatherContext } from "@contexts/WeatherContext";
+import { WeatherData, LocationData } from "@/app/interfaces/weather.interface";
+import { setLocalStorageData, removeLocalStorageData } from "@utils/localStorage";
 
 const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
 const openWeatherMapApiKey = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY || '';
 
 const SearchComponent: React.FC = () => {
   const {
-    inputSearch,
-    setInputSearch,
-    setWeatherForecastCache,
-    searchCache,
-    setSearchCache,
-    latitude,
+    selectedCity,
+    setSelectedCity,
+    searchedCities,
     setLatitude,
-    longitude,
     setLongitude,
     setGeocodeResponse,
+    setWeatherForecastHourly
   } = useWeatherContext();
 
-  const getLocation = () => {
-    return new Promise<{ latitude: number; longitude: number } | null>((resolve) => {
+  const [inputValue, setInputValue] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+
+  const options = [
+    'Lisbon',
+    'Madrid',
+    'Paris',
+    'London',
+    'Rome',
+    'Berlin'
+  ];
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setInputValue(value);
+    setIsOpen(true);
+  };
+
+  const handleOptionClick = (option: string) => {
+    setInputValue(option);
+    setSelectedCity(option);
+    setIsOpen(false);
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 150);
+  };
+
+  const getLocation = (): Promise<LocationData | null> => {
+    return new Promise<LocationData | null>((resolve) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -34,12 +63,11 @@ const SearchComponent: React.FC = () => {
       );
     });
   };
-  
 
-  const fetchGeocode = async (inputSearch: string, apiKey: string) => {
+  const fetchGeocode = async (selectedCity: string, apiKey: string) => {
     try {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${inputSearch}&key=${apiKey}`
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${selectedCity}&key=${apiKey}`
       );
       const json = await response.json();
       return json.results[0];
@@ -50,39 +78,37 @@ const SearchComponent: React.FC = () => {
 
   const weatherOneCallAPI = (lat: number, long: number) => {
     fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=current,minutely,daily,alerts&units=metric&appid=${openWeatherMapApiKey}`
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,daily,alerts&units=metric&appid=${openWeatherMapApiKey}`
     )
       .then((response) => response.json())
       .then((json) => {
-        cacheWeatherForecast(json);
+        setWeatherForecast(json);
       })
       .catch((error) => {
         console.error("Failed retrieving information", error);
       });
   };
 
-
-  const cacheWeatherForecast = (weather: any) => {
-    window.localStorage.removeItem("weatherForecastCache");
+  const setWeatherForecast = (weather: WeatherData) => {
+    removeLocalStorageData("weatherForecast");
 
     if (weather !== null) {
-      setWeatherForecastCache(weather.hourly);
-      localStorage.setItem("weatherForecastCache", JSON.stringify(weather.hourly));
+      setLocalStorageData("weatherForecast", weather);
+      setWeatherForecastHourly(weather.hourly)
     }
   };
 
-  const cacheSearch = (inputSearch: string) => {
-    const include = searchCache.includes(inputSearch);
-    if (inputSearch && !include) {
-      setSearchCache([...searchCache, inputSearch]);
-      localStorage.setItem("searchCache", JSON.stringify(searchCache));
+  const cacheSearch = (selectedCity: string) => {
+    const include = searchedCities.includes(selectedCity);
+    if (selectedCity && !include) {
+      setLocalStorageData("searchedCities", [...searchedCities, selectedCity]);
     }
   };
 
-  const geocoding = (inputSearch: string) => {
-    cacheSearch(inputSearch);
+  const geocoding = (selectedCity: string) => {
+    cacheSearch(selectedCity);
 
-    fetchGeocode(inputSearch, googleMapsApiKey)
+    fetchGeocode(selectedCity, googleMapsApiKey)
       .then((geocodeResult) => {
         setGeocodeResponse(geocodeResult);
         const lat = geocodeResult.geometry.location.lat;
@@ -93,19 +119,17 @@ const SearchComponent: React.FC = () => {
         console.error("Failed retrieving information", error);
       });
 
-    setInputSearch(null);
+    setSelectedCity(null);
   };
 
   const reverseGeocoding = async () => {
     const locationData = await getLocation();
 
-    console.log(locationData)
-  
     if (locationData === null) {
       console.error("Cannot get Location");
     } else {
       const { latitude, longitude } = locationData;
-  
+
       fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${googleMapsApiKey}`
       )
@@ -119,46 +143,71 @@ const SearchComponent: React.FC = () => {
         });
     }
   };
-  
+
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-1/2">
-        <div className="flex flex-row items-center">
+    <div className="flex justify-center items-center flex-col">
+      <div className="flex flex-row items-center justify-center">
+        <div className="relative">
           <input
-            className="w-full px-2 py-1 border rounded-l"
             type="text"
             placeholder="Search City"
-            value={inputSearch || ""}
-            onChange={(e) => setInputSearch(e.target.value)}
+            value={inputValue}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
           />
-          <button
-            className="bg-gray-200 text-gray-600 p-1 rounded-r"
-            onClick={reverseGeocoding}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
-          </button>
-          <div className="w-1/6">
-            <button
-              className="bg-blue-500 text-white p-2 rounded"
-              onClick={() => geocoding(inputSearch)}
-            >
-              Search
-            </button>
-          </div>
+          {isOpen && (
+            <div className="absolute z-10 mt-2 py-2 bg-white border border-gray-300 rounded-md shadow-lg w-full">
+              {options
+                .filter((option) =>
+                  option.toLowerCase().includes(inputValue.toLowerCase())
+                )
+                .map((option, index) => (
+                  <div
+                    key={index}
+                    className="px-4 py-2 cursor-pointer hover:bg-indigo-100"
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option}
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
+        <button
+          className="bg-gray-200 text-gray-600 p-1 rounded-r"
+          onClick={reverseGeocoding}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
+          </svg>
+        </button>
+
+        <button
+          className="bg-blue-500 text-white p-2 rounded"
+          onClick={() => geocoding(selectedCity)}
+        >
+          Search
+        </button>
+      </div>
+
+      <div>
+        {selectedCity && (
+          <div className="mt-2 text-gray-600">
+            Selected option: {selectedCity}
+          </div>
+        )}
       </div>
     </div>
   );
