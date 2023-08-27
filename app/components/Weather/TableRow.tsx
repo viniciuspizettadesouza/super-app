@@ -1,6 +1,6 @@
 import React from "react";
 import Image from 'next/image'
-import { WeatherHourlyData } from "@/app/interfaces/weather.interface";
+import { WeatherHourlyData } from "@interfaces/weather.interface";
 import { capitalizeFirstLetter } from "@utils/capitalizeUtils";
 
 const formatTemperature = (temp: number) => `${Math.round(temp)}º C`;

@@ -3,11 +3,13 @@ import { useWeatherContext } from "@contexts/WeatherContext";
 import {
   WeatherData,
   GeocodeResult,
-} from "@/app/interfaces/weather.interface";
+} from "@interfaces/weather.interface";
 import { fetchGeocode, fetchGeocodeReverse, fetchWeather } from "@app/api";
 import { setLocalStorageData } from "@utils/localStorageUtils";
 import { getLocation } from "@utils/geolocationUtils";
 import { handleError } from "@utils/errorHandlingUtils";
+import ButtonGPS from "@components/Weather/ButtonGPS";
+import Button from "@components/Weather/Button";
 
 const SearchComponent: React.FC = () => {
   const {
@@ -104,7 +106,7 @@ const SearchComponent: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center flex-col">
-      <div className="flex flex-row items-center justify-center my-6">
+      <div className="flex flex-row items-center justify-center mt-6">
         <div className="relative">
           <input
             type="text"
@@ -128,32 +130,14 @@ const SearchComponent: React.FC = () => {
             </div>
           )}
         </div>
-        <button
-          className="bg-gray-200 text-gray-600 p-1 rounded-r"
-          onClick={reverseGeocoding}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
-        </button>
 
-        <button
-          className="bg-blue-500 text-white p-2 rounded"
+        <ButtonGPS onClick={reverseGeocoding} />
+
+        <Button
+          title="Search"
           onClick={() => geocoding(selectedCity)}
-        >
-          Search
-        </button>
+        />
+
         {selectedCity && (
           <div className="mt-2 text-gray-600">
             Selected option: {selectedCity}

@@ -7,7 +7,7 @@ import { WeatherProvider } from "@contexts/WeatherContext";
 const InputGeocode: React.FC = () => {
   return (
     <WeatherProvider>
-      <div className="container mx-auto">
+      <div className="container mx-auto py-4">
         <SearchComponent />
         <TableList />
       </div>

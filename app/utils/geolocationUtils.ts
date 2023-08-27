@@ -1,4 +1,4 @@
-import { LocationData } from '@/app/interfaces/weather.interface';
+import { LocationData } from '@interfaces/weather.interface';
 
 export async function getLocation(): Promise<LocationData> {
     try {
