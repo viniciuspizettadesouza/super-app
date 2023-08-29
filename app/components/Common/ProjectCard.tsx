@@ -17,6 +17,19 @@ const ProjectCard = () => {
                     </p>
                 </div>
             </Link>
+            <Link href="/roman-numeral-calculator">
+                <div className="rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-zinc-300 hover:bg-merino-50">
+                    <h2 className="mb-3 text-2xl font-semibold">
+                        Roman Numeral Calculator{' '}
+                        <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                            -&gt;
+                        </span>
+                    </h2>
+                    <p className="text-sm text-zinc-500">
+                        Convert numbers to Roman numerals.
+                    </p>
+                </div>
+            </Link>
         </div>
     );
 };

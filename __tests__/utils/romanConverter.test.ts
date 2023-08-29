@@ -1,4 +1,4 @@
-import { convertToRoman } from "@utils/romanConverter";
+import { convertToRoman } from "@utils/romanConverterUtils";
 
 describe("convertToRoman", () => {
   it("converts integers to Roman numerals", () => {

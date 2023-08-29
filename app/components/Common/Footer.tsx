@@ -8,6 +8,9 @@ const Footer = () => {
                     <a className="transition hover:text-zinc-500 hover:underline" href="/weather">
                         Weather App
                     </a>
+                    <a className="transition hover:text-zinc-500 hover:underline" href="/roman-numeral-calculator">
+                        Roman Numeral Calculator
+                    </a>
                 </div>
                 <p className="text-sm text-zinc-400">
                     &copy; {new Date().getFullYear()} Vinicius Souza. All rights reserved.

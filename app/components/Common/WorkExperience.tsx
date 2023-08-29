@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
-import WorkExperienceItem from './WorkExperienceItem';
+import WorkExperienceItem from '@components/Common/WorkExperienceItem';
 
 const workExperiences = [
     {
