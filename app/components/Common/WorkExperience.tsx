@@ -46,8 +46,8 @@ const WorkExperience = () => {
     return (
         <div className='space-y-10 lg:pl-16 xl:pl-24'>
             <div className="rounded-2xl border border-zinc-100 p-6">
-                <h2 className="flex text-sm font-semibold text-zinc-900">
-                    <FontAwesomeIcon icon={faBriefcase} className="h-5 w-5 text-zinc-400" />
+                <h2 className="flex text-sm font-semibold">
+                    <FontAwesomeIcon icon={faBriefcase} className="h-5 w-5 text-zinc-500" />
                     <span className="ml-3 text-zinc-900">Work</span>
                 </h2>
                 <ol className="mt-6 space-y-4">
@@ -63,7 +63,7 @@ const WorkExperience = () => {
                     ))}
                 </ol>
                 <Link
-                    className="inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none bg-zinc-50 font-medium text-zinc-900 hover:bg-zinc-100 active:bg-zinc-100 active:text-zinc-900/60 group mt-6 w-full"
+                    className="inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none bg-merino-50 font-medium text-zinc-900 hover:bg-peach-200 active:bg-peach-200 active:text-zinc-900/60 group mt-6 w-full"
                     href="#"
                 >
                     Download CV

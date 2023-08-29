@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Image from 'next/image';
 import Header from './components/Common/Header';
 import WorkExperience from './components/Common/WorkExperience';
 import Footer from './components/Common/Footer';
@@ -7,19 +7,25 @@ import ProjectCard from './components/Common/ProjectCard';
 
 export default function Home() {
   return (
-    <div className='bg-zinc-100'>
+    <div className='bg-merino-50'>
       <Header />
 
       <main className="container px-12 mx-auto max-w-6xl flex flex-col min-h-screen bg-white">
         <div className="sm:px-8 mt-9 mx-auto w-full max-w-7xl lg:px-8">
           <div className="relative px-4 sm:px-8 lg:px-12">
-            <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl">
-              Software developer, founder, and amateur astronaut.
+            <Image
+              alt="Vinicius Photo"
+              width={64}
+              height={64}
+              src="/vini.jpg"
+              className="h-16 w-16 rounded-full"
+            />
+            <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl">
+              Software developer, contractor, and web enthusiast.
             </h1>
             <p className="mt-6 text-base text-zinc-600">
-              I’m Vinicius, a software Developer and entrepreneur based in Lisbon.
-              Welcome to My Super App.
-              I’m the founder and CEO of VPS, where we develop technologies for space exploration.
+              Welcome to my Super App, I’m Vinicius Souza, a software developer and entrepreneur based in Lisbon.
+              I’m the founder and CEO of VPS, where we develop technologies for the web.
             </p>
 
             <SocialLinks />

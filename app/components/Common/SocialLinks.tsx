@@ -9,13 +9,13 @@ const SocialLinks = () => {
             <Link href="https://www.linkedin.com/in/viniciuspizettadesouza/" passHref>
                 <FontAwesomeIcon
                     icon={faLinkedin}
-                    className="h-6 w-6 text-zinc-500 transition"
+                    className="h-6 w-6 text-zinc-500 transition hover:text-zinc-600"
                 />
             </Link>
             <Link href="https://github.com/viniciuspizettadesouza" passHref>
                 <FontAwesomeIcon
                     icon={faGithub}
-                    className="h-6 w-6 text-zinc-500 transition"
+                    className="h-6 w-6 text-zinc-500 transition hover:text-zinc-600"
                 />
             </Link>
         </div>

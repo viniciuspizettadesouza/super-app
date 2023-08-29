@@ -10,7 +10,7 @@ const NavItem: React.FC<NavItemProps> = ({ href, label }) => {
     return (
         <li>
             <Link href={href}>
-                <div className="cursor-pointer">{label}</div>
+                <div className="text-zinc-800 cursor-pointer transition hover:text-zinc-500 font-medium">{label}</div>
             </Link>
         </li>
     );
