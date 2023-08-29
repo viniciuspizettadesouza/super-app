@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import WorkExperienceItem from '@components/Common/WorkExperienceItem';
@@ -46,7 +45,7 @@ const WorkExperience = () => {
     return (
         <div className='space-y-10 lg:pl-16 xl:pl-24'>
             <div className="rounded-2xl border border-zinc-100 p-6">
-                <h2 className="flex text-sm font-semibold">
+                <h2 className="flex text-sm font-semibold items-center">
                     <FontAwesomeIcon icon={faBriefcase} className="h-5 w-5 text-zinc-500" />
                     <span className="ml-3 text-zinc-900">Work</span>
                 </h2>
@@ -54,17 +53,14 @@ const WorkExperience = () => {
                     {workExperiences.map((experience, index) => (
                         <WorkExperienceItem
                             key={index}
-                            companyName={experience.companyName}
-                            role={experience.role}
-                            startDate={experience.startDate}
-                            endDate={experience.endDate}
-                            srcIcon={experience.srcIcon}
+                            {...experience}
                         />
                     ))}
                 </ol>
-                <Link
+                <a
+                    href="https://drive.google.com/uc?export=download&id=1YfVULLxdnCgJq78L-KjDt9zwM9LbmRb3"
                     className="inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none bg-merino-50 font-medium text-zinc-900 hover:bg-peach-200 active:bg-peach-200 active:text-zinc-900/60 group mt-6 w-full"
-                    href="#"
+                    download
                 >
                     Download CV
                     <svg
@@ -80,10 +76,9 @@ const WorkExperience = () => {
                             strokeLinejoin="round"
                         ></path>
                     </svg>
-                </Link>
+                </a>
             </div>
         </div>
-
     );
 };
 
