@@ -4,7 +4,7 @@ import SearchComponent from "@components/Weather/SearchComponent";
 import TableList from "@components/Weather/TableList";
 import { WeatherProvider } from "@contexts/WeatherContext";
 
-const InputGeocode: React.FC = () => {
+const WeatherPage: React.FC = () => {
   return (
     <WeatherProvider>
       <div className="container mx-auto py-4">
@@ -15,4 +15,4 @@ const InputGeocode: React.FC = () => {
   );
 };
 
-export default InputGeocode;
+export default WeatherPage;

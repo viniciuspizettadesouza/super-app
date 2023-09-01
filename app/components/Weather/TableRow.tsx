@@ -2,18 +2,7 @@ import React from "react";
 import Image from 'next/image'
 import { WeatherHourlyData } from "@interfaces/weather.interface";
 import { capitalizeFirstLetter } from "@utils/capitalizeUtils";
-
-const formatTemperature = (temp: number) => `${Math.round(temp)}º C`;
-const formatHumidity = (humidity: number) => `${humidity}%`;
-const formatWindSpeed = (wind_speed: number) => `${(wind_speed * 3.6).toFixed(2)} km/h`;
-const formatDate = (dt: number) => new Date(dt * 1000).toLocaleString('en-US', {
-  weekday: 'short',
-  month: 'short',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  hour12: true,
-});
+import { formatDate, formatTemperature, formatHumidity, formatWindSpeed } from "@utils/formatterUtils";
 
 const TableRow: React.FC<{ item: WeatherHourlyData, index: number }> = ({ item, index }) => (
   <tr key={index}>
