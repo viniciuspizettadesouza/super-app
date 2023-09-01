@@ -1,4 +1,4 @@
-import { GeocodeResult, WeatherData } from '@app/interfaces/weather.interface'; // Update the path as needed
+import { GeocodeResult, WeatherData } from '@app/interfaces/weather.interface';
 
 const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
 const openWeatherMapApiKey = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY || '';
