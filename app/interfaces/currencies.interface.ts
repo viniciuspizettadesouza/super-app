@@ -11,10 +11,15 @@ export interface Currency {
 export interface Product {
     id: string;
     name: string;
-    priceGBP: number;
+    price: number;
     image: string;
 }
 
 export interface BasketItem extends Product {
     quantity: number;
+}
+
+export interface Exchange {
+    name: string;
+    rate: number;
 }

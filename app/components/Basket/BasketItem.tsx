@@ -4,7 +4,6 @@ import { Product, BasketItem } from "@interfaces/currencies.interface";
 import { useBasketContext } from "@contexts/BasketContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-import { debug } from "console";
 
 interface BasketItemProps {
   product: Product;
@@ -56,7 +55,9 @@ const BasketItem: React.FC<BasketItemProps> = ({ product }) => {
           alt={product.name}
           layout="fill"
           objectFit="cover"
+          objectPosition="center"
           className="rounded"
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
         />
       </div>
 
@@ -81,7 +82,7 @@ const BasketItem: React.FC<BasketItemProps> = ({ product }) => {
             <input
               className="h-8 w-8 border bg-white text-center text-xs outline-none appearance-none [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
               type="number"
-              value={basket.find((item: { id: string; }) => item.id === product.id)?.quantity || 0}
+              defaultValue={basket.find((item: { id: string; }) => item.id === product.id)?.quantity || 0}
               min="0"
             />
 
@@ -98,7 +99,7 @@ const BasketItem: React.FC<BasketItemProps> = ({ product }) => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <p className="text-sm">£{product.priceGBP.toFixed(2)}</p>
+            <p className="text-sm">${product.price.toFixed(2)}</p>
 
             <button
               onClick={() => removeFromBasket(product.id)}

@@ -46,7 +46,7 @@ export async function fetchWeather(lat: number, lon: number): Promise<WeatherDat
 }
 
 export async function fetchCurrencies(): Promise<{ [key: string]: number }> {
-    const url = `${currencyLayerApi}/live?access_key=${currencyLayerApiKey}`;
+    const url = `${currencyLayerApi}/live?access_key=${currencyLayerApiKey}&currencies=AUD,BRL,CAD,CHF,CNY,EUR,GBP,INR,JPY`;
     const response = await fetch(url);
 
     return fetchCurrencies2

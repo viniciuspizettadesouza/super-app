@@ -3,18 +3,15 @@ import { useBasketContext } from "@contexts/BasketContext";
 import { BasketItem } from "@/app/interfaces/currencies.interface";
 
 const Subtotal: React.FC = () => {
-    const { products, basket, selectedCurrency } = useBasketContext();
-    const exchangeRate = 1.5;
+    const { basket, selectedCurrency } = useBasketContext();
 
-    console.log(products, basket)
-
-    const totalGBP: number = useMemo(() => {
-        return basket.reduce((total: number, item: BasketItem) => total + item.priceGBP * item.quantity, 0);
+    const total: number = useMemo(() => {
+        return basket.reduce((total: number, item: BasketItem) => total + item.price * item.quantity, 0);
     }, [basket]);
 
     const totalCurrency: string = useMemo(() => {
-        return (totalGBP * exchangeRate).toFixed(2);
-    }, [totalGBP]);
+        return (total * selectedCurrency.rate).toFixed(2);
+    }, [total, selectedCurrency.rate]);
 
     return (
         <div className="h-full rounded-lg border bg-white p-6 shadow-md md:w-1/3">
@@ -23,7 +20,7 @@ const Subtotal: React.FC = () => {
                 {basket.map((item: BasketItem) => (
                     <div key={item.id} className="flex justify-between">
                         <span>{item.name}</span>
-                        <span>{item.quantity}x {item.priceGBP} = {(item.quantity * item.priceGBP).toFixed(2)} </span>
+                        <span>{item.quantity}x {item.price} = {(item.quantity * item.price).toFixed(2)} </span>
                     </div>
                 ))}
             </div>
@@ -33,10 +30,10 @@ const Subtotal: React.FC = () => {
             </div>
             <hr className="my-4" />
             <div className="flex justify-between">
-                <p className="text-lg font-bold">Total</p>
+                <p className="bgptext-lg font-bold">Total</p>
                 <div className="">
-                    <p className="mb-1 text-lg font-bold">£{totalGBP.toFixed(2)}</p>
-                    <p className="text-sm text-gray-700">({selectedCurrency} {totalCurrency})</p>
+                    <p className="mb-1 text-lg font-bold">${total.toFixed(2)}</p>
+                    <p className="text-sm text-gray-700">({selectedCurrency.name} {totalCurrency})</p>
                 </div>
             </div>
             <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
