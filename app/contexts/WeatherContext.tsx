@@ -1,5 +1,6 @@
+'use client';
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { WeatherCurrentData, WeatherHourlyData } from "../interfaces/weather.interface";
+import { WeatherCurrentData, WeatherHourlyData } from "@interfaces/weather.interface";
 import { getLocalStorageData } from "@utils/localStorageUtils";
 
 const WeatherContext = createContext<any>(null);

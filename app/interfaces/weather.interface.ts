@@ -1,5 +1,3 @@
-
-// Weather Types
 export interface WeatherData {
     current: WeatherCurrentData;
     hourly: WeatherHourlyData[];
@@ -46,7 +44,6 @@ export interface LocationData {
     longitude: number;
 }
 
-// Geocode Types
 export interface GeocodeResult {
     address_components: AddressComponent[];
     formatted_address: string;

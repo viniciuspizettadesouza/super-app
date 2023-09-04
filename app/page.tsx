@@ -17,6 +17,11 @@ const appsData = [
     description: 'Manage tasks, assignments, or activities in a simple and organized manner.',
   },
   {
+    href: '/workout',
+    label: 'Workout App',
+    description: 'Create Your Personalized Workout Plan.',
+  },
+  {
     href: '/roman-numeral-calculator',
     label: 'Roman Calculator App',
     description: 'Convert numbers to Roman numerals.',
