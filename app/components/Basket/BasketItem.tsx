@@ -9,8 +9,9 @@ interface BasketItemProps {
   product: Product;
 }
 
-const BasketItem: React.FC<BasketItemProps> = ({ product }) => {
+export default function BasketItem({ product }: BasketItemProps) {
   const { basket, setBasket } = useBasketContext();
+  const basketItem = basket.find((item: { id: string; }) => item.id === product.id)?.quantity;
 
   const addToBasket = (id: string) => {
     const existingItem = basket.find((item: { id: string; }) => item.id === id);
@@ -47,6 +48,7 @@ const BasketItem: React.FC<BasketItemProps> = ({ product }) => {
     );
   };
 
+
   return (
     <div className="flex justify-evenly my-2 mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
       <div className="w-32 h-32 relative">
@@ -82,7 +84,7 @@ const BasketItem: React.FC<BasketItemProps> = ({ product }) => {
             <input
               className="h-8 w-8 border bg-white text-center text-xs outline-none appearance-none [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
               type="number"
-              defaultValue={basket.find((item: { id: string; }) => item.id === product.id)?.quantity || 0}
+              defaultValue={basketItem || 0}
               min="0"
             />
 
@@ -117,5 +119,3 @@ const BasketItem: React.FC<BasketItemProps> = ({ product }) => {
     </div>
   );
 };
-
-export default BasketItem;

@@ -1,28 +1,32 @@
 "use client";
 import React from "react";
-import { BasketProvider } from "@contexts/BasketContext";
-import Basket from "@components/Basket/Basket";
+import Link from "next/link";
+import BasketProvider from "@contexts/BasketContext";
 import CurrencySelector from "@/app/components/Basket/CurrencySelector";
 import ProductsContainer from "@components/Basket/ProductsContainer";
 
-const HomePage: React.FC = () => {
+export default function HomePage() {
     return (
         <BasketProvider>
-            <div className="bg-gray-100">
+            <div className="bg-gray-100 pb-10">
                 <div className="mx-auto container">
-                    <div className="flex justify-between p-4">
+                    <div className="flex justify-between p-4 items-center">
                         <h1 className="text-3xl font-semibold">Shopping Cart</h1>
-                        <CurrencySelector />
+
+                        <div className="flex gap-6">
+                            <CurrencySelector />
+                            
+                            <Link href="/basket/checkout">
+                                <span className="block w-fit px-4 py-2 mt-2 rounded-md bg-blue-500 font-medium text-blue-50 hover:bg-blue-600">
+                                    Check out
+                                </span>
+                            </Link>
+                        </div>
                     </div>
 
                     <ProductsContainer />
-
-                    <h1 className="text-3xl font-semibold">Your Cart</h1>
-                    <Basket />
                 </div>
             </div>
         </BasketProvider>
     );
 };
-
-export default HomePage;

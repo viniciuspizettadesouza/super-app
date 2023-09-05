@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useBasketContext } from "@contexts/BasketContext";
 import { BasketItem } from "@/app/interfaces/currencies.interface";
 
-const Subtotal: React.FC = () => {
+export default function Subtotal() {
     const { basket, selectedCurrency } = useBasketContext();
 
     const total: number = useMemo(() => {
@@ -42,5 +42,3 @@ const Subtotal: React.FC = () => {
         </div>
     );
 };
-
-export default Subtotal;

@@ -7,7 +7,7 @@ function getLast3Digits(inputString: string): string {
     return inputString.substring(inputString.length - 3);
 }
 
-const CurrencyConverter: React.FC = () => {
+export default function CurrencyConverter() {
     const { currencies, selectedCurrency, setCurrencies, setSelectedCurrency } = useBasketContext();
 
     useEffect(() => {
@@ -52,5 +52,3 @@ const CurrencyConverter: React.FC = () => {
         </div>
     );
 };
-
-export default CurrencyConverter;

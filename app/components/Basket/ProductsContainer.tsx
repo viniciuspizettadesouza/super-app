@@ -3,7 +3,7 @@ import { useBasketContext } from "@contexts/BasketContext";
 import { Product as ProductType } from "@/app/interfaces/currencies.interface";
 import BasketItem from "@components/Basket/BasketItem";
 
-const ProductsContainer: React.FC = () => {
+export default function ProductsContainer() {
   const { products } = useBasketContext();
 
   return (
@@ -14,5 +14,3 @@ const ProductsContainer: React.FC = () => {
     </>
   );
 };
-
-export default ProductsContainer;

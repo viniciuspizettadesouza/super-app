@@ -12,7 +12,7 @@ interface BasketProviderProps {
   children: React.ReactNode;
 }
 
-export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
+export default function BasketProvider({ children }: BasketProviderProps) {
   const [currencies, setCurrencies] = useState<{ [key: string]: number } | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<Exchange>({ name: "USD", rate: 1 });
   const [products, setProducts] = useState<Product[]>([
@@ -45,7 +45,6 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
         "https://images.unsplash.com/photo-1613758235402-745466bb7efe",
     },
   ]);
-
   const [basket, setBasket] = useState<{ product: Product; quantity: number }[]>([]);
 
   const basketContextValues = {
