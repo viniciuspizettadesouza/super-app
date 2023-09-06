@@ -1,3 +1,4 @@
+import React from 'react';
 import Image from 'next/image';
 import Header from '@components/Common/Header';
 import WorkExperience from '@components/Common/WorkExperience';

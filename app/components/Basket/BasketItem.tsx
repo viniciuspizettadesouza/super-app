@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { Product, BasketItem } from "@interfaces/currencies.interface";
+import { BasketItem, Product } from "@interfaces/currencies.interface";
 import { useBasketContext } from "@contexts/BasketContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
@@ -11,11 +11,10 @@ interface BasketItemProps {
 
 export default function BasketItem({ product }: BasketItemProps) {
   const { basket, setBasket } = useBasketContext();
-  const basketItem = basket.find((item: { id: string; }) => item.id === product.id)?.quantity;
+  const existingItem = basket.find((item: { id: string; }) => item.id === product.id);
+  const basketItem = existingItem?.quantity || 0;
 
   const addToBasket = (id: string) => {
-    const existingItem = basket.find((item: { id: string; }) => item.id === id);
-
     if (existingItem) {
       setBasket((prevBasket: BasketItem[]) =>
         prevBasket.map((item) =>
@@ -31,8 +30,6 @@ export default function BasketItem({ product }: BasketItemProps) {
   };
 
   const decreaseFromBasket = (id: string) => {
-    const existingItem = basket.find((item: { id: string; }) => item.id === id);
-
     if (existingItem && existingItem.quantity > 1) {
       setBasket((prevBasket: BasketItem[]) =>
         prevBasket.map((item) =>
@@ -48,16 +45,13 @@ export default function BasketItem({ product }: BasketItemProps) {
     );
   };
 
-
   return (
     <div className="flex justify-evenly my-2 mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
       <div className="w-32 h-32 relative">
         <Image
           src={product.image}
           alt={product.name}
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
+          fill
           className="rounded"
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
         />
@@ -84,7 +78,7 @@ export default function BasketItem({ product }: BasketItemProps) {
             <input
               className="h-8 w-8 border bg-white text-center text-xs outline-none appearance-none [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
               type="number"
-              defaultValue={basketItem || 0}
+              value={basketItem}
               min="0"
             />
 
@@ -118,4 +112,4 @@ export default function BasketItem({ product }: BasketItemProps) {
       </div>
     </div>
   );
-};
+}
