@@ -1,11 +1,12 @@
 import React from "react";
-import { Product } from "@/app/interfaces/currencies.interface";
-import { useBasketContext } from "@contexts/BasketContext";
+import { useSelector } from "react-redux";
+import { RootState } from "@app/redux/store";
+import { Product } from "@app/interfaces/currencies.interface";
 import BasketItem from "@components/Basket/BasketItem";
 import Subtotal from "@components/Basket/Subtotal";
 
 export default function Basket() {
-    const { products } = useBasketContext();
+    const { products } = useSelector((state: RootState) => state.basket);
 
     return (
         <div className="mx-auto max-w-5xl justify-between px-6 md:flex md:space-x-6 xl:px-0">

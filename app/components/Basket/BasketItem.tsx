@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { BasketItem, Product } from "@interfaces/currencies.interface";
-import { useBasketContext } from "@contexts/BasketContext";
+import { Product, BasketItem } from "@interfaces/currencies.interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { addItemToBasket, decreaseItemInBasket, removeItemFromBasket } from "@app/redux/basketSlice";
+import { RootState } from "@/app/redux/store";
 
 interface BasketItemProps {
   product: Product;
@@ -11,43 +13,23 @@ interface BasketItemProps {
 
 export default function BasketItem({ product }: BasketItemProps) {
   const { id, name, image, price } = product;
-  const { basket, setBasket } = useBasketContext();
-  const existingItem = basket.find((item: { id: string }) => item.id === id);
-  const [basketItem, setBasketItem] = useState(existingItem?.quantity || 0);
+  const { basket } = useSelector((state: RootState) => state.basket);
+  const existingItem = basket.find((item: BasketItem) => item.id === id);
 
-  const addToBasket = (id: string) => {
-    if (existingItem) {
-      setBasketItem((prevQuantity: number) => prevQuantity + 1);
-      setBasket((prevBasket: BasketItem[]) =>
-        prevBasket.map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-        )
-      );
-    } else {
-      setBasketItem(1);
-      setBasket((prevBasket: BasketItem[]) => [
-        ...prevBasket,
-        { ...product, quantity: 1 },
-      ]);
+  const dispatch = useDispatch();
+
+  const addToBasket = () => {
+    dispatch(addItemToBasket(product));
+  };
+
+  const decreaseFromBasket = () => {
+    if (existingItem && existingItem.quantity > 0) {
+      dispatch(decreaseItemInBasket(product));
     }
   };
 
-  const decreaseFromBasket = (id: string) => {
-    if (existingItem && existingItem.quantity > 1) {
-      setBasketItem((prevQuantity: number) => prevQuantity - 1);
-      setBasket((prevBasket: BasketItem[]) =>
-        prevBasket.map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-        )
-      );
-    }
-  };
-
-  const removeFromBasket = (id: string) => {
-    setBasketItem(0);
-    setBasket((prevBasket: BasketItem[]) =>
-      prevBasket.filter((item) => item.id !== id)
-    );
+  const removeFromBasket = () => {
+    dispatch(removeItemFromBasket(product));
   };
 
   return (
@@ -70,7 +52,7 @@ export default function BasketItem({ product }: BasketItemProps) {
         <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
           <div className="flex items-center border-gray-100">
             <button
-              onClick={() => decreaseFromBasket(id)}
+              onClick={() => decreaseFromBasket()}
               className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
             >
               <FontAwesomeIcon
@@ -83,13 +65,13 @@ export default function BasketItem({ product }: BasketItemProps) {
             <input
               className="h-8 w-8 border bg-white text-center text-xs outline-none appearance-none [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
               type="number"
-              value={basketItem}
+              value={existingItem?.quantity || 0}
               min="0"
-              onChange={(e) => setBasketItem(e.target.value || 0)}
+              readOnly
             />
 
             <button
-              onClick={() => addToBasket(id)}
+              onClick={() => addToBasket()}
               className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
             >
               <FontAwesomeIcon
@@ -104,7 +86,7 @@ export default function BasketItem({ product }: BasketItemProps) {
             <p className="text-sm">${price.toFixed(2)}</p>
 
             <button
-              onClick={() => removeFromBasket(id)}
+              onClick={() => removeFromBasket()}
               className="cursor-pointer rounded py-1 px-3 duration-100 hover:bg-gray-100"
             >
               <FontAwesomeIcon

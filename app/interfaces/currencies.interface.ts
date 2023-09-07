@@ -23,3 +23,10 @@ export interface Exchange {
     name: string;
     rate: number;
 }
+
+export interface BasketState {
+    currencies: { [key: string]: number } | null;
+    selectedCurrency: Exchange;
+    products: Product[];
+    basket: BasketItem[];
+}

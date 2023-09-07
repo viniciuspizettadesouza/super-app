@@ -1,7 +1,7 @@
 import React from 'react';
 import NavItem from '@components/Common/NavItem';
 import NavHOC from '@components/Common/NavHOC';
-import { AppsData } from '@/app/interfaces/home.interface';
+import { AppsData } from '@app/interfaces/home.interface';
 
 const Header: React.FC<AppsData> = ({ appsData }) => {
     return (

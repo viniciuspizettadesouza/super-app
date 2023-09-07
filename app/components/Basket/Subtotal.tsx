@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
-import { useBasketContext } from "@contexts/BasketContext";
-import { BasketItem } from "@/app/interfaces/currencies.interface";
+import { BasketItem } from "@app/interfaces/currencies.interface";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
 
 export default function Subtotal() {
-    const { basket, selectedCurrency } = useBasketContext();
+    const { basket, selectedCurrency } = useSelector((state: RootState) => state.basket);
 
     const total: number = useMemo(() => {
         return basket.reduce((total: number, item: BasketItem) => total + item.price * item.quantity, 0);

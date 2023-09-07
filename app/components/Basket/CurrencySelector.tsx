@@ -1,29 +1,33 @@
 'use client';
 import React, { useEffect } from "react";
-import { useBasketContext } from "@contexts/BasketContext";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@app/redux/store";
 import { fetchCurrencies } from "@app/api";
+import { setCurrencies, setSelectedCurrency } from "@app/redux/basketSlice";
 
 function getLast3Digits(inputString: string): string {
     return inputString.substring(inputString.length - 3);
 }
 
 export default function CurrencyConverter() {
-    const { currencies, selectedCurrency, setCurrencies, setSelectedCurrency } = useBasketContext();
+    const { currencies, selectedCurrency } = useSelector((state: RootState) => state.basket);
 
+    const dispatch = useDispatch();
     useEffect(() => {
         if (!currencies) {
             fetchCurrencies().then((data) => {
-                setCurrencies(data);
+                dispatch(setCurrencies(data));
             });
         }
-    }, [currencies, setCurrencies]);
+    }, [currencies, dispatch]);
 
     const handleCurrencyChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedCode = event.target.value;
-        const selectedRate = currencies[selectedCode];
+        const selectedRate = currencies ? currencies[selectedCode] : 1;
+        console.log(selectedRate);
 
         const last3Digits = getLast3Digits(selectedCode);
-        setSelectedCurrency({ ...selectedCurrency, rate: selectedRate, name: last3Digits });
+        dispatch(setSelectedCurrency({ ...selectedCurrency, rate: selectedRate, name: last3Digits }));
     };
 
     return (
@@ -44,11 +48,11 @@ export default function CurrencyConverter() {
                     ))}
             </select>
 
-            {selectedCurrency.name && currencies && (
+            {selectedCurrency.name && (
                 <p>
                     Selected Currency: {selectedCurrency.name}
                 </p>
             )}
         </div>
     );
-};
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppsData } from '@/app/interfaces/home.interface';
+import { AppsData } from '@app/interfaces/home.interface';
 
 const Footer: React.FC<AppsData> = ({ appsData }) => {
     return (
