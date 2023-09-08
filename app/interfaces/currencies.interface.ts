@@ -1,34 +1,39 @@
-export interface Currency {
+export type Currency = {
     code: string;
     name: string;
     rate: number;
     timestamp: number;
     quotes: {
         [currencyCode: string]: number;
-    }
-}
+    };
+};
 
-export interface Product {
+export type Product = {
     id: string;
     name: string;
     price: number;
     image: string;
-}
+};
 
-export interface BasketItem extends Product {
+export type BasketItem = Product & {
     quantity: number;
-}
+};
 
-export interface SelectedCurrency {
+export type SelectedCurrency = {
     id: string;
     rate: number;
     symbol: string;
     name: string;
-}
+};
 
-export interface BasketState {
+export type BasketState = {
     currencies: SelectedCurrency[];
     selectedCurrency: SelectedCurrency;
     products: Product[];
     basket: BasketItem[];
-}
+};
+
+export type CurrencyInfo = {
+    symbol: string;
+    name: string;
+};

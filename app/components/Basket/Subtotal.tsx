@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { BasketItem } from "@app/interfaces/currencies.interface";
 import { useSelector } from "react-redux";
-import { RootState } from "@/app/redux/store";
+import { RootState } from "@app/redux/store";
 
 export default function Subtotal() {
     const { basket, selectedCurrency } = useSelector((state: RootState) => state.basket);
