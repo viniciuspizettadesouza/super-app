@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import CurrencySelector from "@app/components/Basket/CurrencySelector";
-import ProductsContainer from "@components/Basket/ProductsContainer";
+import CurrencySelector from "@components/Cart/CurrencySelector";
+import ProductsContainer from "@components/Cart/ProductsContainer";
 
 export default function HomePage() {
     return (
@@ -14,7 +14,7 @@ export default function HomePage() {
                     <div className="flex gap-6">
                         <CurrencySelector />
 
-                        <Link href="/basket/checkout">
+                        <Link href="/cart/checkout">
                             <span className="block w-fit px-4 py-2 mt-2 rounded-md bg-blue-500 font-medium text-blue-50 hover:bg-blue-600">
                                 Cart
                             </span>

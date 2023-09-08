@@ -1,14 +1,14 @@
 import React, { useMemo } from "react";
-import { BasketItem } from "@app/interfaces/currencies.interface";
+import { CartItem } from "@app/interfaces/currencies.interface";
 import { useSelector } from "react-redux";
-import { RootState } from "@app/redux/store";
+import { RootState } from "@redux/store";
 
 export default function Subtotal() {
-    const { basket, selectedCurrency } = useSelector((state: RootState) => state.basket);
+    const { cart, selectedCurrency } = useSelector((state: RootState) => state.cart);
 
     const total: number = useMemo(() => {
-        return basket.reduce((total: number, item: BasketItem) => total + item.price * item.quantity, 0);
-    }, [basket]);
+        return cart.reduce((total: number, item: CartItem) => total + item.price * item.quantity, 0);
+    }, [cart]);
 
     const totalCurrency: string = useMemo(() => {
         return (total * selectedCurrency.rate).toFixed(2);
@@ -18,7 +18,7 @@ export default function Subtotal() {
         <div className="h-full rounded-lg border bg-white p-6 shadow-md md:w-1/2">
             <div className="mb-2 flex flex-col justify-between">
                 <p className="text-gray-700">Subtotal</p>
-                {basket.map((item: BasketItem) => (
+                {cart.map((item: CartItem) => (
                     <div key={item.id} className="flex justify-between">
                         <span>{item.name}</span>
                         <span>

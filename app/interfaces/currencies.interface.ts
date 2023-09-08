@@ -15,7 +15,7 @@ export type Product = {
     image: string;
 };
 
-export type BasketItem = Product & {
+export type CartItem = Product & {
     quantity: number;
 };
 
@@ -26,11 +26,11 @@ export type SelectedCurrency = {
     name: string;
 };
 
-export type BasketState = {
+export type CartState = {
     currencies: SelectedCurrency[];
     selectedCurrency: SelectedCurrency;
     products: Product[];
-    basket: BasketItem[];
+    cart: CartItem[];
 };
 
 export type CurrencyInfo = {

@@ -1,35 +1,35 @@
 import React from "react";
 import Image from "next/image";
-import { Product, BasketItem } from "@interfaces/currencies.interface";
+import { Product, CartItem } from "@interfaces/currencies.interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
-import { addItemToBasket, decreaseItemInBasket, removeItemFromBasket } from "@app/redux/basketSlice";
-import { RootState } from "@/app/redux/store";
+import { addItemToCart, decreaseItemInCart, removeItemFromCart } from "@redux/cartSlice";
+import { RootState } from "@redux/store";
 
-interface BasketItemProps {
+interface CartItemProps {
   product: Product;
 }
 
-export default function BasketItem({ product }: BasketItemProps) {
+export default function CartItem({ product }: CartItemProps) {
   const { id, name, image, price } = product;
-  const { basket, selectedCurrency} = useSelector((state: RootState) => state.basket);
-  const existingItem = basket.find((item: BasketItem) => item.id === id);
+  const { cart, selectedCurrency} = useSelector((state: RootState) => state.cart);
+  const existingItem = cart.find((item: CartItem) => item.id === id);
 
   const dispatch = useDispatch();
 
-  const addToBasket = () => {
-    dispatch(addItemToBasket(product));
+  const addToCart = () => {
+    dispatch(addItemToCart(product));
   };
 
-  const decreaseFromBasket = () => {
+  const decreaseFromCart = () => {
     if (existingItem && existingItem.quantity > 0) {
-      dispatch(decreaseItemInBasket(product));
+      dispatch(decreaseItemInCart(product));
     }
   };
 
-  const removeFromBasket = () => {
-    dispatch(removeItemFromBasket(product));
+  const removeFromCart = () => {
+    dispatch(removeItemFromCart(product));
   };
 
   return (
@@ -52,7 +52,7 @@ export default function BasketItem({ product }: BasketItemProps) {
         <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
           <div className="flex items-center border-gray-100">
             <button
-              onClick={() => decreaseFromBasket()}
+              onClick={() => decreaseFromCart()}
               className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
             >
               <FontAwesomeIcon
@@ -71,7 +71,7 @@ export default function BasketItem({ product }: BasketItemProps) {
             />
 
             <button
-              onClick={() => addToBasket()}
+              onClick={() => addToCart()}
               className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
             >
               <FontAwesomeIcon
@@ -86,7 +86,7 @@ export default function BasketItem({ product }: BasketItemProps) {
             <p className="text-sm">{selectedCurrency.symbol}{(price * selectedCurrency.rate).toFixed(2)}</p>
 
             <button
-              onClick={() => removeFromBasket()}
+              onClick={() => removeFromCart()}
               className="cursor-pointer rounded py-1 px-3 duration-100 hover:bg-gray-100"
             >
               <FontAwesomeIcon

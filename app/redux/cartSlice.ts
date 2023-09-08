@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Product, SelectedCurrency, BasketState, BasketItem, CurrencyInfo } from "@interfaces/currencies.interface";
+import { Product, SelectedCurrency, CartState, CartItem, CurrencyInfo } from "@interfaces/currencies.interface";
 import { CurrencyData } from "@utils/currencyUtils";
 
-const initialState: BasketState = {
+const initialState: CartState = {
     currencies: [{ id: "USD", rate: 1, symbol: '$', name: 'United States Dollar', }],
     selectedCurrency: { id: "USD", rate: 1, symbol: '$', name: 'United States Dollar', },
     products: [
@@ -35,11 +35,11 @@ const initialState: BasketState = {
                 "https://images.unsplash.com/photo-1613758235402-745466bb7efe",
         },
     ],
-    basket: [],
+    cart: [],
 };
 
-const basketSlice = createSlice({
-    name: "basket",
+const cartSlice = createSlice({
+    name: "cart",
     initialState,
     reducers: {
         setSelectedCurrency: (state, action: PayloadAction<SelectedCurrency>) => {
@@ -67,30 +67,30 @@ const basketSlice = createSlice({
         setProducts: (state, action: PayloadAction<Product[]>) => {
             state.products = action.payload;
         },
-        addItemToBasket: (state, action: PayloadAction<Product>) => {
-            const existingItem = state.basket?.find((item) => item.id === action.payload.id);
+        addItemToCart: (state, action: PayloadAction<Product>) => {
+            const existingItem = state.cart?.find((item) => item.id === action.payload.id);
 
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                const newBasketItem: BasketItem = {
+                const newCartItem: CartItem = {
                     ...action.payload, quantity: 1,
                 };
-                state.basket.push(newBasketItem);
+                state.cart.push(newCartItem);
             }
         },
-        decreaseItemInBasket: (state, action: PayloadAction<Product>) => {
-            const existingItem = state.basket?.find((item) => item.id === action.payload.id
+        decreaseItemInCart: (state, action: PayloadAction<Product>) => {
+            const existingItem = state.cart?.find((item) => item.id === action.payload.id
             );
             if (existingItem && existingItem.quantity > 0) {
                 existingItem.quantity -= 1;
             }
         },
-        removeItemFromBasket: (state, action: PayloadAction<Product>) => {
-            const indexToRemove = state.basket.findIndex((item) => item.id === action.payload.id);
+        removeItemFromCart: (state, action: PayloadAction<Product>) => {
+            const indexToRemove = state.cart.findIndex((item) => item.id === action.payload.id);
 
             if (indexToRemove !== -1) {
-                state.basket.splice(indexToRemove, 1);
+                state.cart.splice(indexToRemove, 1);
             }
         },
     },
@@ -100,9 +100,9 @@ export const {
     setSelectedCurrency,
     setCurrencies,
     setProducts,
-    addItemToBasket,
-    decreaseItemInBasket,
-    removeItemFromBasket
-} = basketSlice.actions;
+    addItemToCart,
+    decreaseItemInCart,
+    removeItemFromCart
+} = cartSlice.actions;
 
-export default basketSlice.reducer;
+export default cartSlice.reducer;

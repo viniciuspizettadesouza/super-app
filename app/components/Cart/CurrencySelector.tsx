@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@app/redux/store";
+import { RootState } from "@redux/store";
 import { fetchCurrencies } from "@app/api";
-import { setCurrencies, setSelectedCurrency } from "@app/redux/basketSlice";
+import { setCurrencies, setSelectedCurrency } from "@redux/cartSlice";
 
 export default function CurrencyConverter() {
-    const { currencies, selectedCurrency } = useSelector((state: RootState) => state.basket);
-
-    console.log(currencies, selectedCurrency)
+    const { currencies, selectedCurrency } = useSelector((state: RootState) => state.cart);
 
     const dispatch = useDispatch();
     useEffect(() => {

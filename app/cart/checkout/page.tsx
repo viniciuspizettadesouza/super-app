@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import Basket from "@components/Basket/Basket";
-import CurrencySelector from "@app/components/Basket/CurrencySelector";
+import Cart from "@components/Cart/Cart";
+import CurrencySelector from "@app/components/Cart/CurrencySelector";
 
 export default function HomePage() {
     return (
@@ -13,7 +13,7 @@ export default function HomePage() {
                     <CurrencySelector />
                 </div>
 
-                <Basket />
+                <Cart />
             </div>
         </div>
     );
