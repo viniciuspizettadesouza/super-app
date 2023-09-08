@@ -15,13 +15,17 @@ export default function Subtotal() {
     }, [total, selectedCurrency.rate]);
 
     return (
-        <div className="h-full rounded-lg border bg-white p-6 shadow-md md:w-1/3">
+        <div className="h-full rounded-lg border bg-white p-6 shadow-md md:w-1/2">
             <div className="mb-2 flex flex-col justify-between">
                 <p className="text-gray-700">Subtotal</p>
                 {basket.map((item: BasketItem) => (
                     <div key={item.id} className="flex justify-between">
                         <span>{item.name}</span>
-                        <span>{item.quantity}x {item.price} = {(item.quantity * item.price).toFixed(2)} </span>
+                        <span>
+                            {item.quantity}x{" "}
+                            {selectedCurrency.symbol}{(item.price * selectedCurrency.rate).toFixed(2)} ={" "}
+                            {selectedCurrency.symbol}{(item.quantity * item.price * selectedCurrency.rate).toFixed(2)}
+                        </span>
                     </div>
                 ))}
             </div>
@@ -33,8 +37,8 @@ export default function Subtotal() {
             <div className="flex justify-between">
                 <p className="bgptext-lg font-bold">Total</p>
                 <div className="">
-                    <p className="mb-1 text-lg font-bold">${total.toFixed(2)}</p>
-                    <p className="text-sm text-gray-700">({selectedCurrency.name} {totalCurrency})</p>
+                    <p className="mb-1 text-lg font-bold">{selectedCurrency.id} {totalCurrency}</p>
+                    <p className="text-sm text-gray-700">(USD ${total.toFixed(2)})</p>
                 </div>
             </div>
             <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">

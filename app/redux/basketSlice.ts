@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Exchange, Product } from "@interfaces/currencies.interface";
-import { BasketState, BasketItem } from "@interfaces/currencies.interface";
+import { SelectedCurrency, Product } from "@interfaces/currencies.interface";
+import { BasketState, BasketItem, } from "@interfaces/currencies.interface";
+import { CurrencyData } from "@utils/currencyUtils";
 
 const initialState: BasketState = {
-    currencies: null,
-    selectedCurrency: { name: "USD", rate: 1 },
+    currencies: [{ id: "USD", rate: 1, symbol: '$', name: 'United States Dollar', }],
+    selectedCurrency: { id: "USD", rate: 1, symbol: '$', name: 'United States Dollar', },
     products: [
         {
             id: "peas",
@@ -42,11 +43,20 @@ const basketSlice = createSlice({
     name: "basket",
     initialState,
     reducers: {
-        setSelectedCurrency: (state, action: PayloadAction<Exchange>) => {
+        setSelectedCurrency: (state, action: PayloadAction<SelectedCurrency>) => {
             state.selectedCurrency = action.payload;
         },
-        setCurrencies: (state, action: PayloadAction<{ [key: string]: number } | null>) => {
-            state.currencies = action.payload;
+        setCurrencies: (state, action: PayloadAction<{ [key: string]: number }>) => {
+            const formattedCurrencies = Object.keys(action.payload).map((currencyCode) => {
+                const currencyId = currencyCode.substring(3)
+                return {
+                    id: currencyId,
+                    rate: action.payload[currencyCode],
+                    ...CurrencyData[currencyId]
+                }
+            });
+
+            state.currencies = formattedCurrencies;
         },
         setProducts: (state, action: PayloadAction<Product[]>) => {
             state.products = action.payload;

@@ -13,7 +13,7 @@ interface BasketItemProps {
 
 export default function BasketItem({ product }: BasketItemProps) {
   const { id, name, image, price } = product;
-  const { basket } = useSelector((state: RootState) => state.basket);
+  const { basket, selectedCurrency} = useSelector((state: RootState) => state.basket);
   const existingItem = basket.find((item: BasketItem) => item.id === id);
 
   const dispatch = useDispatch();
@@ -83,7 +83,7 @@ export default function BasketItem({ product }: BasketItemProps) {
           </div>
 
           <div className="flex items-center space-x-4">
-            <p className="text-sm">${price.toFixed(2)}</p>
+            <p className="text-sm">{selectedCurrency.symbol}{(price * selectedCurrency.rate).toFixed(2)}</p>
 
             <button
               onClick={() => removeFromBasket()}

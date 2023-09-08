@@ -19,14 +19,16 @@ export interface BasketItem extends Product {
     quantity: number;
 }
 
-export interface Exchange {
-    name: string;
+export interface SelectedCurrency {
+    id: string;
     rate: number;
+    symbol: string;
+    name: string;
 }
 
 export interface BasketState {
-    currencies: { [key: string]: number } | null;
-    selectedCurrency: Exchange;
+    currencies: SelectedCurrency[];
+    selectedCurrency: SelectedCurrency;
     products: Product[];
     basket: BasketItem[];
 }

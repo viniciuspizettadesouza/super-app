@@ -16,7 +16,7 @@ export default function HomePage() {
 
                         <Link href="/basket/checkout">
                             <span className="block w-fit px-4 py-2 mt-2 rounded-md bg-blue-500 font-medium text-blue-50 hover:bg-blue-600">
-                                Check out
+                                Cart
                             </span>
                         </Link>
                     </div>
