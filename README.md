@@ -39,10 +39,12 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-## This project implements features from the projects located in the links below:
+## This project implements features of the projects below
 
 https://github.com/viniciuspizettadesouza/challenge-conaz
 
 https://github.com/viniciuspizettadesouza/challenge-zygo
 
 https://github.com/viniciuspizettadesouza/challenge-propertiag
+
+https://github.com/viniciuspizettadesouza/challenge-blueticket
