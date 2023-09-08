@@ -8,24 +8,29 @@ import ProjectCard from '@components/Common/ProjectCard';
 
 const appsData = [
   {
+    href: '/cart',
+    label: 'Shopping Cart App',
+    description: 'Streamline your online shopping with our easy-to-use cart management system.'
+  },
+  {
     href: '/weather',
     label: 'Weather App',
-    description: 'Weather app connecting OpenWeather API and Google Geocoding API.',
-  },
+    description: 'Stay updated on the weather with our app using OpenWeather and Geocoding APIs.'
+  },  
   {
     href: '/todo',
     label: 'Todo App',
-    description: 'Manage tasks, assignments, or activities in a simple and organized manner.',
+    description: 'Effortlessly manage your tasks, assignments, or activities with our user-friendly Todo App, designed to keep you organized.'
   },
   {
     href: '/workout',
     label: 'Workout App',
-    description: 'Create Your Personalized Workout Plan.',
+    description: 'Craft your personalized workout plan and achieve your fitness goals with our Workout App.'
   },
   {
     href: '/roman-numeral-calculator',
     label: 'Roman Calculator App',
-    description: 'Convert numbers to Roman numerals.',
+    description: 'Easily convert numbers to Roman numerals using our straightforward calculator.'
   },
 ];
 
